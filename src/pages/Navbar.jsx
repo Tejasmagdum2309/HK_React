@@ -1,12 +1,19 @@
 import React from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { homeatomState, massageatomState, notificationatomState, profileSelector } from '../store/atoms/navbar.atoms'
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { notifications } from '../store/atoms/navbar.async';
+// import { useRecoilValue, useSetRecoilState } from 'recoil'
+// import { homeatomState, massageatomState, notificationatomState, profileSelector } from '../store/atoms/navbar.atoms'
 
 const Navbar = () => {
 
-    const HomeState = useRecoilValue(homeatomState);
-    const NotificationState = useRecoilValue(notificationatomState);
+//     const HomeState = useRecoilValue(homeatomState);
+//     const NotificationState = useRecoilValue(notificationatomState);
 
+
+// day 3 practice recoils => aton + seletos + Async data queries...
+
+
+  const allNotifications = useRecoilValue(notifications);
 
    console.log('rendered-navbar');
 
@@ -15,8 +22,8 @@ const Navbar = () => {
     <div className='flex justify-center items-center gap-5 bg-black p4-2 text-white'>
 
       <div>Navbar  </div>
-      <div>Home ({HomeState}) </div>
-       <div>Notificaions ({NotificationState}) </div>
+      <div>Home ({allNotifications.homeatomState}) </div>
+       <div>Notificaions ({allNotifications.notificationatomState}) </div>
         <MessageNavComp/>
        <Profilebtn/>
     </div>
@@ -27,10 +34,13 @@ export default Navbar
 
 function MessageNavComp() {   
     console.log('rendered-messageNavComp');
-    const MessagesState = useRecoilValue(massageatomState);
+    // const MessagesState = useRecoilValue(massageatomState);
+
+    const allNotifications = useRecoilValue(notifications);
+
 
   return (
-    <>   <div>Messages ({MessagesState})</div>     
+    <>   <div>Messages ({allNotifications.massageatomState})</div>     
    
     </>
   )
@@ -39,12 +49,15 @@ function MessageNavComp() {
 
 function Profilebtn() {   
     console.log('rendered-Profilebtn');
-  const profileSelectorState = useRecoilValue(profileSelector);
-  const setMessageSelector = useSetRecoilState(massageatomState);
+  // const profileSelectorState = useRecoilValue(profileSelector);
+  // const setMessageSelector = useSetRecoilState(massageatomState);
+  const allNotifications = useRecoilValue(notifications);
+  const setMessageSelector = useSetRecoilState(notifications);
   return (
     <>       
-    <div>Profile ({profileSelectorState})</div>
-    <button  onClick={() => setMessageSelector(pre => pre + 1)}> Click Me </button>
+    <div>Profile ({allNotifications.profileatomState})</div>
+    {/* <button  onClick={() => setMessageSelector(pre => pre + 1)}> Click Me </button> */}
+    <button  onClick={() => setMessageSelector(  (pre) => {  return {...pre , profileatomState : pre.profileatomState + 1 } } ) }> Click Me </button>
     </>
   )
 }
